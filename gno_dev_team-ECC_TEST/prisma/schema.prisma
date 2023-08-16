@@ -1,0 +1,257 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// enum  user_type
+enum userType {
+  faithful
+  prayer_group
+  parish
+  diocese
+  Seat
+  admin
+}
+
+//enum sex
+enum SEX {
+  male
+  female
+}
+
+// Give lesson
+enum GiveLesson {
+  Beginner
+  Confirmed
+  Expert
+}
+
+// user model 
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  firstname  String?
+  lastname String? 
+  type userType?
+  avatar String?
+  password String?  @db.VarChar(255)
+  validated Boolean?  @default(false)
+  blocked Boolean?   @default(true)
+  parish_official Boolean? @default(false)
+  hide_email Boolean? @default(false)
+  hide_phone Boolean? @default(false)
+  website String?
+  facebook_url String?
+  twitter_url String?
+  user_faithful UserFaithful?
+  zone Zone? @relation(fields: [zoneId], references: [id]) // one-to-one relation
+  zoneId Int? @unique // foreign key
+  continent Continent? @relation(fields: [continentId], references: [id]) // relation one-to-one
+  continentId Int? @unique // foreign key
+  country Country? @relation(fields: [countryId], references: [id])
+  countryId Int? @unique // foreign key
+  city City? @relation(fields: [cityId], references: [id]) // relation one-to-one 
+  cityId Int? @unique // foreign key
+  department Department? @relation(fields: [departmentId], references: [id])
+  departmentId Int? @unique
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  announcements Announcement[]
+}
+
+
+//user faithful model 
+model UserFaithful {
+  id Int @id @default(autoincrement())
+  birthday DateTime @db.Date
+  sex SEX
+  diploma_certification String 
+  speaking_language String
+  phone_number BigInt @db.UnsignedBigInt
+  other_activities String @db.LongText
+  search_partner String @db.LongText
+  can_give_lesson GiveLesson
+  user User @relation(fields: [userId], references: [id])
+  userId Int @unique
+  grade GrandeEcc @relation(fields: [gradeId], references: [id]) 
+  gradeId Int @unique
+  function_ecc_id FunctionEcc  @relation(fields: [FunctionId], references: [id])
+  FunctionId Int
+  ministry Ministry @relation(fields: [ministryId], references: [id])
+  ministryId Int 
+  
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+//zone model
+model Zone {
+  id Int @id @default(autoincrement())
+  name_fr String @unique @db.VarChar(255) 
+  name_en String @unique @db.VarChar(255)
+  name_es String @unique @db.VarChar(255)
+  user User?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+//continent model
+model Continent {
+  id Int @id @default(autoincrement())
+  name_fr String @unique @db.VarChar(255) 
+  name_en String @unique @db.VarChar(255)
+  name_es String @unique @db.VarChar(255)
+  user User?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  countries Country[]
+}
+
+//pays model
+model Country {
+  id Int @id @default(autoincrement())
+  name_fr String @unique @db.VarChar(255) 
+  name_en String @unique @db.VarChar(255)
+  name_es String @unique @db.VarChar(255)
+  user User?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt  
+  continent   Continent @relation(fields: [continentId], references: [id])
+  continentId  Int
+  cities City[]
+}
+
+//cities model
+model City {
+  id Int @id @default(autoincrement())
+  name_fr String @unique @db.VarChar(255) 
+  name_en String @unique @db.VarChar(255)
+  name_es String @unique @db.VarChar(255)
+  user User?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  country   Country @relation(fields: [countryId], references: [id])
+  countryId  Int
+}
+
+//departement model
+model Department {
+  id Int @id @default(autoincrement())
+  name_fr String @unique @db.VarChar(255) 
+  name_en String @unique @db.VarChar(255)
+  name_es String @unique @db.VarChar(255)
+  user User?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+//grade cc model
+model GrandeEcc {
+  id Int @id @default(autoincrement())
+  name_fr String @unique @db.VarChar(255) 
+  name_en String @unique @db.VarChar(255)
+  name_es String @unique @db.VarChar(255)
+  userfaithful UserFaithful?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+// function ecc model
+model FunctionEcc {
+  id Int @id @default(autoincrement())
+  name_fr String @unique @db.VarChar(255) 
+  name_en String @unique @db.VarChar(255)
+  name_es String @unique @db.VarChar(255)
+  userFaithful UserFaithful[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+//mistry ecc model
+model Ministry {
+  id Int @id @default(autoincrement())
+  name_fr String @unique @db.VarChar(255) 
+  name_en String @unique @db.VarChar(255)
+  name_es String @unique @db.VarChar(255)
+  userFaithful UserFaithful[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+//instrument model
+model Instrument {
+  id Int @id @default(autoincrement())
+  name_fr String @unique @db.VarChar(255) 
+  name_en String @unique @db.VarChar(255)
+  name_es String @unique @db.VarChar(255)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+//dimension ecc
+model DimensionEcc {
+  id Int @id @default(autoincrement())
+  value BigInt @db.UnsignedBigInt
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+//###################################### HILARY MODELS ####################################################
+
+//Model for announcements
+
+model Announcement {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  image     String?
+  content   String
+  author    User @relation(fields: [authorId], references: [id])
+  authorId   Int
+}
+
+// Model for event type
+enum EventType {
+  virtual
+  present
+}
+
+//Model for events
+
+// model Event {
+//   id        Int      @id @default(autoincrement())
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   title     String
+//   image     String?
+//   type      EventType 
+//   startDate DateTime
+//   endDate   DateTime
+//   startTime DateTime @db.time()
+//   endTime   DateTime @db.time()
+//   city      City @relation(fields: [cityId], references: [id])
+//   cityId    Int
+//   author    User @relation(fields: [authorId], references: [id])
+//   authorId  Int
+// }
+

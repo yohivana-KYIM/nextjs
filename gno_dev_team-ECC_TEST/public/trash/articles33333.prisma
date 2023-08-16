@@ -1,0 +1,663 @@
+// // This is your Prisma schema file,
+// // learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+// datasource db {
+//   provider = "mysql"
+//   url      = env("DATABASE_URL")
+// }
+// //##########################################################################################
+
+// // Description: It is a weekly and static schedule.
+// // It is each parish that defines the worship it does
+
+// //##################################### Church_worship #####################################
+
+// // Table for define the church_worship time for parish
+// model Church_worship {
+//   id Int @id @default(autoincrement())
+//   name String 
+//   pastor String
+//   country String
+//   city String
+//   address String
+//   mail String 
+//   nber_of_faithful Int
+//   website String?
+//   phone String?
+//   mobile_phone String
+//   charge String
+//   facebook String?
+//   twitter String?
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//   worship_times Worship_time[]
+// // waiting for the user_id(parish)
+
+// }
+
+// // Table for define the worship time for Church_worship
+// model Worship_time {
+//   id Int @id @default(autoincrement())
+//   day Day_of_the_week
+//   start_time DateTime
+//   end_time DateTime
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//   church_worship Church_worship[]
+// }
+
+// enum Day_of_the_week{
+//   LUNDI
+//   MARDI
+//   MERCREDI
+//   JEUDI
+//   VENDREDI
+//   SAMEDI
+//   DIMANCHE
+// }
+
+// //##########################################################################################
+
+// // Description: Anyone can fill in a job offer, even Natural Persons.
+
+// //##################################### Job_offer #########################################
+
+// //Table for job offer: 
+
+// model Job_offer {
+//   id BigInt @id @default(autoincrement())
+//   reference String
+//   title String
+//   description String 
+//   status Int
+//   location String
+//   company_name String 
+//   company_email String
+//   campany_website String?
+//   company_logo String
+//   min_price BigInt 
+//   max_price BigInt
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//   start_date DateTime
+//   // waiting for the user_id
+//   job_offer_comment Job_offer_comment[]
+
+//   // ------- connection to traduction model-------
+
+//   type_contract Type_contract @relation(fields: [type_contractId], references: [id])
+//   type_contractId BigInt
+
+//   language_on_job_offer Language_on_job_offer[]
+
+//   size_company Size_company @relation(fields: [size_companyId], references: [id])
+//   size_companyId BigInt
+
+//   offer_type Offer_type @relation(fields: [offer_typeId], references: [id])
+//   offer_typeId BigInt
+
+//   year_experience Year_experience @relation(fields: [year_experienceId], references: [id])
+//   year_experienceId BigInt
+
+//   continent Continent @relation(fields: [continentId], references: [id])
+//   continentId BigInt
+
+//   level_study Level_study @relation(fields: [level_studyId], references: [id])
+//   level_studyId BigInt
+
+//   work_mode Work_mode @relation(fields: [work_modeId], references: [id])
+//   work_modeId BigInt
+
+//   zone Zone @relation(fields: [zoneId], references: [id])
+//   zoneId BigInt
+
+//   work_department Work_department @relation(fields: [work_departmentId], references: [id])
+//   work_departmentId BigInt
+
+//   country Country @relation(fields: [countryId], references: [id])
+//   countryId BigInt
+
+//   city City @relation(fields: [cityId], references: [id])
+//   cityId BigInt
+
+//   // ------------------------------------------
+
+//   currency Currency @relation(fields: [currencyId], references: [id])
+//   currencyId BigInt
+// }
+
+//         //+++++++++++++++ model for traduction ++++++++++++++++++++++
+
+// // Table to traduct type of contract
+// // ex: temps plein, temps partiel
+// model Type_contract{
+//   id BigInt @id @default(autoincrement())
+//   name_fr String 
+//   name_es String
+//   name_en String
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//   job_offer Job_offer[]
+// }
+
+// // Table to traduct the size of company
+// // ex: Large > 250, Medium < 250,  Small < 50, micro < 10
+// model Size_company{
+//   id BigInt @id @default(autoincrement())
+//   name_fr String 
+//   name_es String
+//   name_en String
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//   job_offer Job_offer[]
+// }
+
+// // Table to traduct the offer type
+// // ex: Stage, Alternance, Freelance, Interim, CDD, CDI
+// model Offer_type{
+//   id BigInt @id @default(autoincrement())
+//   name_fr String 
+//   name_es String
+//   name_en String
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//   job_offer Job_offer[]
+// }
+
+// // Table to define language
+// model Language{
+//   id BigInt @id @default(autoincrement())
+//   name_fr String 
+//   name_es String
+//   name_en String
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//   language_on_job_offer Language_on_job_offer[]
+// }
+
+// // Table for define manyTomany relantionship between Language and Job_offer table
+// model Language_on_job_offer{
+//   job_offer Job_offer @relation(fields: [job_offerId], references: [id])
+//   job_offerId BigInt
+//   language Language @relation(fields: [languageId], references: [id])
+//   languageId BigInt
+//   assignedAt DateTime @default(now())
+//   assignedBy String
+
+//   @@id([job_offerId, languageId])
+// }
+
+
+// // Table to traduct the year of experience
+// model Year_experience{
+//   id BigInt @id @default(autoincrement())
+//   name_fr String 
+//   name_es String
+//   name_en String
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//   job_offer Job_offer[]
+// }
+
+// // Table to traduct the continent
+// // ex: Africa, America ...
+// model Continent{
+//   id BigInt @id @default(autoincrement())
+//   name_fr String 
+//   name_es String
+//   name_en String
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//   job_offer Job_offer[]
+//   zone Zone @relation(fields: [zoneId], references: [id])
+//   zoneId BigInt
+// }
+
+// // Table to traduct the level of study 
+//   //require to apply for job offer
+// // ex: Bac+1, Bac+2, Bac+3, ..., Autres
+// model Level_study{
+//   id BigInt @id @default(autoincrement())
+//   name_fr String 
+//   name_es String
+//   name_en String
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//   job_offer Job_offer[]
+// }
+
+// // Table to traduct the work mode
+// // ex: mixte, presentiel, teletravail
+// model Work_mode{
+//   id BigInt @id @default(autoincrement())
+//   name_fr String 
+//   name_es String
+//   name_en String
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//   job_offer Job_offer[]
+// }
+
+// // Table to traduct the work mode
+// // ex: vente, sante ....
+// model Work_department{
+//   id BigInt @id @default(autoincrement())
+//   name_fr String 
+//   name_es String
+//   name_en String
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//   job_offer Job_offer[]
+// }
+
+// // Table to traduct the zone
+// // ex: Afrique du nord, sud , est, ouest, austral
+// model Zone{
+//   id BigInt @id @default(autoincrement())
+//   name_fr String 
+//   name_es String
+//   name_en String
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//   job_offer Job_offer[]
+//   continent Continent[]
+//   country Country[]
+// }
+
+// // Table to traduct the country
+// // ex: Cameroon, Gabon, Nigeria ....
+// model Country{
+//   id BigInt @id @default(autoincrement())
+//   name_fr String 
+//   name_es String
+//   name_en String
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//   zone Zone @relation(fields: [zoneId], references: [id])
+//   zoneId BigInt
+//   job_offer Job_offer[]
+//   city City[]
+// }
+
+// // Table to traduct the city
+// // ex: Douala, Abuja, Abijan ....
+// model City{
+//   id BigInt @id @default(autoincrement())
+//   name_fr String 
+//   name_es String
+//   name_en String
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//   country Country @relation(fields: [countryId], references: [id])
+//   countryId BigInt
+//   job_offer Job_offer[]
+
+// }
+
+//       //+++++++++++++++++++++++++++++++++++++++++
+
+// // Table to define the currency for salary job offer
+// // ex: dollar, euro
+// model Currency{
+//   id BigInt @id @default(autoincrement())
+//   symbol String 
+//   name String
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//   job_offer Job_offer[]
+// }
+
+// // Table to define the comment of user for specific job offer
+// model Job_offer_comment{
+//   id BigInt @id @default(autoincrement())
+//   content String @db.LongText
+//   status Int
+//   parent Int
+//   // waiting for the user_id
+//   job_offer Job_offer @relation(fields: [job_offerId], references: [id])
+//   job_offerId BigInt
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+// }
+
+// //##########################################################################################
+
+// // Description: I wrote a book. I would like to have a section (to see for the location) where I can put
+// // chapter by chapter my book.
+// // For each chapter and a title, add a YouTube video that can be consulted directly on the site,
+// // allow comments on this chapter on the site.
+// // There may be
+// // comments below people and even mine.
+
+// //####################################### Special Book #######################################
+
+// // Table to define Special_book for specific user
+// model Special_book {
+//   id BigInt @id @default(autoincrement())
+//   name String
+//   publishing_house String
+//   book_theme String
+//   description String @db.Text
+//   author String 
+//   publication_date DateTime @db.Date
+//   isbn String
+//   summary_book String @db.LongText
+//   nber_of_page Int
+//   book_age String? // linit age to ability to read book
+//   imge_path String
+//   chapter Chapter[]
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//   // waiting for the user_id
+// }
+
+// // Table to define Chapter for specific Special_book
+// model Chapter {
+//   id BigInt @id @default(autoincrement())
+//   name String
+//   start_page Int
+//   end_page Int
+//   content String @db.LongText
+//   video_path String
+//   special_book Special_book @relation(fields: [special_bookId], references: [id])
+//   special_bookId BigInt
+//   chapter_comment Chapter_comment[]
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+// }
+
+// // Table to define the comment of user for specific Chapter
+// model Chapter_comment{
+//   id BigInt @id @default(autoincrement())
+//   content String @db.LongText
+//   status Int
+//   parent Int
+//   // waiting for the user_id
+//   chapter Chapter @relation(fields: [chapterId], references: [id])
+//   chapterId BigInt
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+// }
+
+// //##########################################################################################
+
+// // Description: These are YouTube videos where the links will be added. 
+// // It will still be necessary to inform the theme of
+// // the video so that it can appear in the filters.
+// // Comments should be possible on the site at the bottom of this video.
+
+// //####################################### Share video #######################################
+
+// // Table to define Chapter for specific Special_book
+// model Share_video {
+//   id BigInt @id @default(autoincrement())
+//   link String //Link to Youtube video
+//   theme String
+//   share_video_comment Share_video_comment[]
+//   //waiting for the user id
+// }
+
+// // Table to define comment for specific Share_video
+// model Share_video_comment{
+//   id BigInt @id @default(autoincrement())
+//   content String @db.LongText
+//   status Int
+//   parent Int
+//   // waiting for the user_id
+//   share_video Share_video @relation(fields: [share_videoId], references: [id])
+//   share_videoId BigInt
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+// }
+
+
+// // enum  user_type
+// enum userType {
+//   faithful
+//   prayer_group
+//   parish
+//   diocese
+//   Seat
+//   admin
+// }
+
+// //enum sex
+// enum SEX {
+//   male
+//   female
+// }
+
+// // Give lesson
+// enum GiveLesson {
+//   Beginner
+//   Confirmed
+//   Expert
+// }
+
+// // user model 
+// model User {
+//   id    Int     @id @default(autoincrement())
+//   email String  @unique
+//   firstname  String
+//   lastname String 
+//   type userType
+//   avatar String 
+//   password String  @db.VarChar(255)
+//   validated Boolean  @default(false)
+//   blocked Boolean   @default(false)
+//   parish_official Boolean @default(false)
+//   hide_email Boolean @default(false)
+//   hide_phone Boolean @default(false)
+//   website String
+//   facebook_url String
+//   twitter_url String
+//   user_faithful UserFaithful?
+//   zone Zone @relation(fields: [zoneId], references: [id]) // one-to-one relation
+//   zoneId Int @unique // foreign key
+//   continent Continent @relation(fields: [continentId], references: [id]) // relation one-to-one
+//   continentId Int @unique // foreign key
+//   country Country @relation(fields: [countryId], references: [id])
+//   countryId Int @unique // foreign key
+//   city City @relation(fields: [cityId], references: [id]) // relation one-to-one 
+//   cityId Int @unique // foreign key
+//   department Department @relation(fields: [departmentId], references: [id])
+//   departmentId Int @unique
+
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//   announcements Announcement[]
+//   events Event[]
+// }
+
+
+// //user faithful model 
+// model UserFaithful {
+//   id Int @id @default(autoincrement())
+//   birthday DateTime @db.Date
+//   sex SEX
+//   diploma_certification String 
+//   speaking_language String
+//   phone_number BigInt @db.UnsignedBigInt
+//   other_activities String @db.LongText
+//   search_partner String @db.LongText
+//   can_give_lesson GiveLesson
+//   user User @relation(fields: [userId], references: [id])
+//   userId Int @unique
+//   grade GrandeEcc @relation(fields: [gradeId], references: [id]) 
+//   gradeId Int @unique
+//   function_ecc_id FunctionEcc  @relation(fields: [FunctionId], references: [id])
+//   FunctionId Int
+//   ministry Ministry @relation(fields: [ministryId], references: [id])
+//   ministryId Int 
+  
+
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+// }
+
+// //zone model
+// model Zone {
+//   id Int @id @default(autoincrement())
+//   name_fr String @unique @db.VarChar(255) 
+//   name_en String @unique @db.VarChar(255)
+//   name_es String @unique @db.VarChar(255)
+//   user User?
+
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+// }
+
+// //continent model
+// model Continent {
+//   id Int @id @default(autoincrement())
+//   name_fr String @unique @db.VarChar(255) 
+//   name_en String @unique @db.VarChar(255)
+//   name_es String @unique @db.VarChar(255)
+//   user User?
+
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//   countries Country[]
+// }
+
+// //pays model
+// model Country {
+//   id Int @id @default(autoincrement())
+//   name_fr String @unique @db.VarChar(255) 
+//   name_en String @unique @db.VarChar(255)
+//   name_es String @unique @db.VarChar(255)
+//   user User?
+
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt  
+//   continent   Continent @relation(fields: [continentId], references: [id])
+//   continentId  Int
+//   cities City[]
+// }
+
+// //cities model
+// model City {
+//   id Int @id @default(autoincrement())
+//   name_fr String @unique @db.VarChar(255) 
+//   name_en String @unique @db.VarChar(255)
+//   name_es String @unique @db.VarChar(255)
+//   user User?
+
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//   country   Country @relation(fields: [countryId], references: [id])
+//   countryId  Int
+//   events Event[]
+// }
+
+// //departement model
+// model Department {
+//   id Int @id @default(autoincrement())
+//   name_fr String @unique @db.VarChar(255) 
+//   name_en String @unique @db.VarChar(255)
+//   name_es String @unique @db.VarChar(255)
+//   user User?
+
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+// }
+
+// //grade cc model
+// model GrandeEcc {
+//   id Int @id @default(autoincrement())
+//   name_fr String @unique @db.VarChar(255) 
+//   name_en String @unique @db.VarChar(255)
+//   name_es String @unique @db.VarChar(255)
+//   userfaithful UserFaithful?
+
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+// }
+
+// // function ecc model
+// model FunctionEcc {
+//   id Int @id @default(autoincrement())
+//   name_fr String @unique @db.VarChar(255) 
+//   name_en String @unique @db.VarChar(255)
+//   name_es String @unique @db.VarChar(255)
+//   userFaithful UserFaithful[]
+
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+// }
+
+// //mistry ecc model
+// model Ministry {
+//   id Int @id @default(autoincrement())
+//   name_fr String @unique @db.VarChar(255) 
+//   name_en String @unique @db.VarChar(255)
+//   name_es String @unique @db.VarChar(255)
+//   userFaithful UserFaithful[]
+
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+// }
+
+// //instrument model
+// model Instrument {
+//   id Int @id @default(autoincrement())
+//   name_fr String @unique @db.VarChar(255) 
+//   name_en String @unique @db.VarChar(255)
+//   name_es String @unique @db.VarChar(255)
+
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+// }
+
+// //dimension ecc
+// model DimensionEcc {
+//   id Int @id @default(autoincrement())
+//   value BigInt @db.UnsignedBigInt
+
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+// }
+
+// //###################################### HILARY MODELS ####################################################
+
+// //Model for announcements
+
+// model Announcement {
+//   id        Int      @id @default(autoincrement())
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   title     String
+//   image     String?
+//   content   String
+//   author    User @relation(fields: [authorId], references: [id])
+//   authorId   Int
+// }
+
+// // Model for event type
+// enum EventType {
+//   virtual
+//   present
+// }
+
+// //Model for events
+
+// model Event {
+//   id        Int      @id @default(autoincrement())
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   title     String
+//   image     String?
+//   type      EventType 
+//   startDate DateTime
+//   endDate   DateTime
+//   startTime DateTime @db.time()
+//   endTime   DateTime @db.time()
+//   city      City @relation(fields: [cityId], references: [id])
+//   cityId    Int
+//   author    User @relation(fields: [authorId], references: [id])
+//   authorId  Int
+// }

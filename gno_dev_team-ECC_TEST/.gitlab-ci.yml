@@ -1,0 +1,22 @@
+image: node:latest
+
+cache:
+  paths:
+    - node_modules/
+
+stages:
+  - build
+  - deploy
+
+before_script:
+  - npm install
+
+deploy:
+  stage: deploy
+  script:
+    - apt-get update && apt-get install -y lftp
+    - echo "set ftp:ssl-allow no" > ftp_commands
+    - echo "open -u test@africaunity.net,8WXTxXLW_W_8XXygg, node92-eu.n0c.com" >> ftp_commands
+    - echo "mirror --reverse --verbose --exclude node_modules --exclude .git ./ ecc" >> ftp_commands
+    - lftp -f ftp_commands
+  
