@@ -1,6 +1,9 @@
-import { GetServerSideProps } from 'next';
+import {
+  GetServerSideProps,
+  NextPage,
+} from 'next';
 
-const page = () => {
+const Page: NextPage = () => {
     return (
         <p className='text-center text-green-500 font-bold'>
             Hi Mom
@@ -9,13 +12,9 @@ const page = () => {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-
-
     return {
-        props:{
-
-        }
-    }
+        props: {}
+    };
 }
 
-export default page
+export default Page;

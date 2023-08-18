@@ -30,13 +30,13 @@
     "eslint-config-next": "13.4.8",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.1",
-    "next": "^13.4.16",
+    "next": "^13.4.18",
     "nodemailer": "^6.9.3",
     "pinia": "^2.1.4",
     "postcss": "8.4.24",
-    "react": "18.2.0",
+    "react": "^18.2.0",
     "react-accessible-accordion": "^5.0.0",
-    "react-dom": "18.2.0",
+    "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
     "react-headless-accordion": "^1.0.2",
     "react-redux": "^8.1.1",
@@ -50,5 +50,10 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.3"
-  }
+  },
+  "description": "<<<<<<< HEAD # ECC PROJECT",
+  "main": "next.config.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
